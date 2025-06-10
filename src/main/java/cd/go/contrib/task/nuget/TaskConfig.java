@@ -42,7 +42,7 @@ public class TaskConfig {
     private final String optExclude;
     private final boolean optExcludeEmptyDirectories;
     private final boolean optExcludeVersion;
-    private final String optExpand;
+    private final boolean optExpand;
     private final String optFallbackSource;
     private final String optFileConflictAction;
     private final boolean optForce;
@@ -158,7 +158,7 @@ public class TaskConfig {
         optExclude = getValue(config, TaskPlugin.OPT_EXCLUDE);
         optExcludeEmptyDirectories = getBooleanValue(config, TaskPlugin.OPT_EXCLUDE_EMPTY_DIRECTORIES);
         optExcludeVersion = getBooleanValue(config, TaskPlugin.OPT_EXCLUDE_VERSION);
-        optExpand = getValue(config, TaskPlugin.OPT_EXPAND);
+        optExpand = getBooleanValue(config, TaskPlugin.OPT_EXPAND);
         optFallbackSource = getValue(config, TaskPlugin.OPT_FALLBACK_SOURCE);
         optFileConflictAction = getValue(config, TaskPlugin.OPT_FILE_CONFLICT_ACTION);
         optForce = getBooleanValue(config, TaskPlugin.OPT_FORCE);
@@ -455,7 +455,7 @@ public class TaskConfig {
      * Get the NuGet option `-Expand`
      * @return the NuGet option `-Expand`
      */
-    public String getOptExpand() {
+    public boolean hasOptExpand() {
         return optExpand;
     }
 

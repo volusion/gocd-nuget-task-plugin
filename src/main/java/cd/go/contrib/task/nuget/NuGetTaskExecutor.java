@@ -441,10 +441,8 @@ public class NuGetTaskExecutor {
         }
 
         if (TaskPlugin.CMDSET_ADD_INIT.contains(command)) {
-            String exapnd = taskConfig.getOptExpand();
-            if (exapnd != null && !exapnd.isEmpty()) {
+            if (taskConfig.hasOptExpand()) {
                 cmd.add("-Expand");
-                cmd.add(exapnd);
             }
         }
 
@@ -468,13 +466,13 @@ public class NuGetTaskExecutor {
             String name = taskConfig.getOptName();
             if (name != null && !name.isEmpty()) {
                 cmd.add("-Name");
-                cmd.add(name);
+                cmd.add(taskConfig.isOptNameFromEnv() ? expandEnvVars(taskContext, name) : name);
             }
 
             String protocolVersion = taskConfig.getOptProtocolVersion();
             if (protocolVersion != null && !protocolVersion.isEmpty()) {
                 cmd.add("-ProtocolVersion");
-                cmd.add(protocolVersion);
+                cmd.add(taskConfig.isOptProtocolVersionFromEnv() ? expandEnvVars(taskContext, protocolVersion) : protocolVersion);
             }
 
             String username = taskConfig.getOptUsername();
@@ -496,7 +494,7 @@ public class NuGetTaskExecutor {
             String validAuthenticationTypes = taskConfig.getOptValidAuthenticationTypes();
             if (validAuthenticationTypes != null && !validAuthenticationTypes.isEmpty()) {
                 cmd.add("-ValidAuthenticationTypes");
-                cmd.add(validAuthenticationTypes);
+                cmd.add(taskConfig.isOptValidAuthenticationTypesFromEnv() ? expandEnvVars(taskContext, validAuthenticationTypes) : validAuthenticationTypes);
             }
         }
 
@@ -504,13 +502,13 @@ public class NuGetTaskExecutor {
             String id = taskConfig.getOptId();
             if (id != null && !id.isEmpty()) {
                 cmd.add("-Id");
-                cmd.add(id);
+                cmd.add(taskConfig.isOptIdFromEnv() ? expandEnvVars(taskContext, id) : id);
             }
 
             String repositoryPath = taskConfig.getOptRepositoryPath();
             if (repositoryPath != null && !repositoryPath.isEmpty()) {
                 cmd.add("-RepositoryPath");
-                cmd.add(repositoryPath);
+                cmd.add(taskConfig.isOptRepositoryPathFromEnv() ? expandEnvVars(taskContext, repositoryPath) : repositoryPath);
             }
 
             if (taskConfig.hasOptSafe()) {
