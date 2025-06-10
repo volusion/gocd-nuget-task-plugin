@@ -1,0 +1,561 @@
+{
+    "config": {
+        "command": {
+            "secure": false,
+            "value": "config",
+            "required": true
+        },
+        "argPackageIdOrFilePath": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "argKey": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "argPackageVersion": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "argSource": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "argDestination": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "argOperation": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optAllowInsecureConnections": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optApiKey": {
+            "secure": true,
+            "value": null,
+            "required": false
+        },
+        "optAsPath": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optBasePath": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optBuild": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optConfigFile": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optDependencyVersion": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optDirectDownload": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optDisableBuffering": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optDisableParallelProcessing": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optExclude": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optExcludeEmptyDirectories": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optExcludeVersion": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optExpand": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optFallbackSource": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optFileConflictAction": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optForce": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optForceEnglishOutput": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optForceEvaluate": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optFormat": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optFramework": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optId": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optIncludeReferencedProjects": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optInstallPackageToOutputPath": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optLockFilePath": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optLockedMode": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optMinClientVersion": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optMSBuildPath": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optMSBuildVersion": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optName": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optNoDefaultExcludes": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optNoHttpCache": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optNoPackageAnalysis": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optNoPrompt": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optNoServiceEndpoint": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optNoSymbols": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optOutputDirectory": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optOutputFileNamesWithoutVersion": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optPackageSaveMode": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optPackagesDirectory": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optPassword": {
+            "secure": true,
+            "value": null,
+            "required": false
+        },
+        "optPreRelease": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optProject2ProjectTimeOut": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optProperties": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optProtocolVersion": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optRecursive": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optRequireConsent": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optRepositoryPath": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optSafe": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optSelf": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optSet": {
+            "secure": false,
+            "value": "test_config=test_value",
+            "required": false
+        },
+        "optSkipDuplicate": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optSolutionDirectory": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optSource": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optStorePasswordInClearText": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optSuffix": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optSymbolApiKey": {
+            "secure": true,
+            "value": null,
+            "required": false
+        },
+        "optSymbolPackageFormat": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optSymbolSource": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optSymbols": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optTimeout": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optTool": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optUseLockFile": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optUsername": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optValidAuthenticationTypes": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optVerbosity": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "optVersion": {
+            "secure": false,
+            "value": null,
+            "required": false
+        },
+        "argPackageIdOrFilePathFromEnv": {
+            "secure": false,
+            "value": false,
+            "required": false
+        },
+        "argKeyFromEnv": {
+            "secure": false,
+            "value": false,
+            "required": false
+        },
+        "argPackageVersionFromEnv": {
+            "secure": false,
+            "value": false,
+            "required": false
+        },
+        "argSourceFromEnv": {
+            "secure": false,
+            "value": false,
+            "required": false
+        },
+        "argDestinationFromEnv": {
+            "secure": false,
+            "value": false,
+            "required": false
+        },
+        "argOperationFromEnv": {
+            "secure": false,
+            "value": false,
+            "required": false
+        },
+        "optVersionFromEnv": {
+            "secure": false,
+            "value": false,
+            "required": false
+        },
+        "optSourceFromEnv": {
+            "secure": false,
+            "value": false,
+            "required": false
+        },
+        "optOutputDirectoryFromEnv": {
+            "secure": false,
+            "value": false,
+            "required": false
+        },
+        "optConfigFileFromEnv": {
+            "secure": false,
+            "value": false,
+            "required": false
+        },
+        "optSolutionDirectoryFromEnv": {
+            "secure": false,
+            "value": false,
+            "required": false
+        },
+        "optFrameworkFromEnv": {
+            "secure": false,
+            "value": false,
+            "required": false
+        },
+        "optBasePathFromEnv": {
+            "secure": false,
+            "value": false,
+            "required": false
+        },
+        "optExcludeFromEnv": {
+            "secure": false,
+            "value": false,
+            "required": false
+        },
+        "optMinClientVersionFromEnv": {
+            "secure": false,
+            "value": false,
+            "required": false
+        },
+        "optPropertiesFromEnv": {
+            "secure": false,
+            "value": false,
+            "required": false
+        },
+        "optSuffixFromEnv": {
+            "secure": false,
+            "value": false,
+            "required": false
+        },
+        "optFallbackSourceFromEnv": {
+            "secure": false,
+            "value": false,
+            "required": false
+        },
+        "optMSBuildPathFromEnv": {
+            "secure": false,
+            "value": false,
+            "required": false
+        },
+        "optMSBuildVersionFromEnv": {
+            "secure": false,
+            "value": false,
+            "required": false
+        },
+        "optPackagesDirectoryFromEnv": {
+            "secure": false,
+            "value": false,
+            "required": false
+        },
+        "optApiKeyFromEnv": {
+            "secure": false,
+            "value": false,
+            "required": false
+        },
+        "optSymbolSourceFromEnv": {
+            "secure": false,
+            "value": false,
+            "required": false
+        },
+        "optSymbolApiKeyFromEnv": {
+            "secure": false,
+            "value": false,
+            "required": false
+        },
+        "optTimeoutFromEnv": {
+            "secure": false,
+            "value": false,
+            "required": false
+        },
+        "optSetFromEnv": {
+            "secure": false,
+            "value": false,
+            "required": false
+        },
+        "optAsPathFromEnv": {
+            "secure": false,
+            "value": false,
+            "required": false
+        },
+        "optLockFilePathFromEnv": {
+            "secure": false,
+            "value": false,
+            "required": false
+        },
+        "optProject2ProjectTimeOutFromEnv": {
+            "secure": false,
+            "value": false,
+            "required": false
+        },
+        "optNameFromEnv": {
+            "secure": false,
+            "value": false,
+            "required": false
+        },
+        "optProtocolVersionFromEnv": {
+            "secure": false,
+            "value": false,
+            "required": false
+        },
+        "optUsernameFromEnv": {
+            "secure": false,
+            "value": false,
+            "required": false
+        },
+        "optPasswordFromEnv": {
+            "secure": false,
+            "value": false,
+            "required": false
+        },
+        "optValidAuthenticationTypesFromEnv": {
+            "secure": false,
+            "value": false,
+            "required": false
+        },
+        "optIdFromEnv": {
+            "secure": false,
+            "value": false,
+            "required": false
+        },
+        "optRepositoryPathFromEnv": {
+            "secure": false,
+            "value": false,
+            "required": false
+        }
+    },
+    "context": {
+        "workingDirectory": "./build/test-results/",
+        "environmentVariables": {
+            "GO_STAGE_NAME": "deploy",
+            "GO_JOB_NAME": "main"
+        }
+    }
+}

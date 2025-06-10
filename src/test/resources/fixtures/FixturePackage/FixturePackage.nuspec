@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>FixturePackage</id>
+        <version>1.0.0</version>
+        <description>This is a sample fixture package for unit tests.</description>
+        <authors>Volusion</authors>
+    </metadata>
+    <files>
+        <file src="Deploy.ps1" target="" />
+        <file src="DeployFailed.ps1" target="" />
+        <file src="PostDeploy.ps1" target="" />
+        <file src="PreDeploy.ps1" target="" />
+    </files>
+</package>

@@ -1,0 +1,652 @@
+<div data-plugin-style-id="cd.go.contrib.task.nuget">
+    <!--
+      ~ Copyright 2025 Volusion, LLC.
+      ~
+      ~ Licensed under the Apache License, Version 2.0 (the "License");
+      ~ you may not use this file except in compliance with the License.
+      ~ You may obtain a copy of the License at
+      ~
+      ~     http://www.apache.org/licenses/LICENSE-2.0
+      ~
+      ~ Unless required by applicable law or agreed to in writing, software
+      ~ distributed under the License is distributed on an "AS IS" BASIS,
+      ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      ~ See the License for the specific language governing permissions and
+      ~ limitations under the License.
+    -->
+    <div class="form_item_block">
+        <label for="command">command: <span class="asterisk">*</span></label>
+        <select id="command" ng-model="command">
+            <option value="install">install</option>
+            <option value="config">config</option>
+            <option value="pack">pack</option>
+            <option value="push">push</option>
+            <option value="restore">restore</option>
+            <option value="setapikey">setapikey</option>
+            <option value="add">add</option>
+            <option value="delete">delete</option>
+            <option value="init">init</option>
+            <option value="sources">sources</option>
+            <option value="update">update</option>
+        </select>
+        <span class="form_error" ng-show="GOINPUTNAME[command].$error.server">{{ GOINPUTNAME[command].$error.server }}</span>
+    </div>
+
+    <div class="form_item_block" ng-show="['install', 'pack', 'push', 'restore', 'add', 'update', 'delete'].includes(command)">
+        <label for="argPackageIdOrFilePath" ng-class="{'is-invalid-label': GOINPUTNAME[argPackageIdOrFilePath].$error.server}" ng-switch="command">
+            <span ng-switch-when="install">PackageID or ConfigFilePath: </span>
+            <span ng-switch-when="pack">NuspecPath or ProjectFilePath: </span>
+            <span ng-switch-when="push">PackagePath: </span>
+            <span ng-switch-when="add">PackagePath: </span>
+            <span ng-switch-when="restore">ProjectFilePath: </span>
+            <span ng-switch-when="delete">PackageID: </span>
+            <span ng-switch-when="update">ConfigFilePath: </span>
+            <span ng-switch-default><!-- This should not be possible, how did you do this? --></span>
+            <span class="asterisk">*</span>
+        </label>
+        <div style="display: flex;">
+            <select ng-model="argPackageIdOrFilePathFromEnv"><option value="false">Literal Var</option><option value="true">Env Var</option></select>
+            <input type="text" id="argPackageIdOrFilePath" ng-model="argPackageIdOrFilePath" ng-required="true" ng-class="{'is-invalid-input': GOINPUTNAME[argPackageIdOrFilePath].$error.server}" />
+        </div>
+        <span class="form_error" ng-show="GOINPUTNAME[argPackageIdOrFilePath].$error.server">{{ GOINPUTNAME[argPackageIdOrFilePath].$error.server }}</span>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'setapikey'">
+        <label for="argKey" ng-class="{'is-invalid-label': GOINPUTNAME[argKey].$error.server}">Key: <span class="asterisk">*</span></label>
+        <div style="display: flex;">
+            <select ng-model="argKeyFromEnv"><option value="false">Literal Var</option><option value="true">Env Var</option></select>
+            <input type="text" id="argKey" ng-model="argKey" ng-class="{'is-invalid-input': GOINPUTNAME[argKey].$error.server}" />
+        </div>
+        <span class="form_error" ng-show="GOINPUTNAME[argKey].$error.server">{{ GOINPUTNAME[argKey].$error.server }}</span>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'delete'">
+        <label for="argPackageVersion" ng-class="{'is-invalid-label': GOINPUTNAME[argPackageVersion].$error.server}">PackageVersion: <span class="asterisk">*</span></label>
+        <div style="display: flex;">
+            <select ng-model="argPackageVersionFromEnv"><option value="false">Literal Var</option><option value="true">Env Var</option></select>
+            <input type="text" id="argPackageVersion" ng-model="argPackageVersion" ng-class="{'is-invalid-input': GOINPUTNAME[argPackageVersion].$error.server}" />
+        </div>
+        <span class="form_error" ng-show="GOINPUTNAME[argPackageVersion].$error.server">{{ GOINPUTNAME[argPackageVersion].$error.server }}</span>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'init'">
+        <label for="argSource" ng-class="{'is-invalid-label': GOINPUTNAME[argSource].$error.server}">Source: <span class="asterisk">*</span></label>
+        <div style="display: flex;">
+            <select ng-model="argSourceFromEnv"><option value="false">Literal Var</option><option value="true">Env Var</option></select>
+            <input type="text" id="argSource" ng-model="argSource" ng-class="{'is-invalid-input': GOINPUTNAME[argSource].$error.server}" />
+        </div>
+        <span class="form_error" ng-show="GOINPUTNAME[argSource].$error.server">{{ GOINPUTNAME[argSource].$error.server }}</span>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'init'">
+        <label for="argDestination" ng-class="{'is-invalid-label': GOINPUTNAME[argDestination].$error.server}">Destination: <span class="asterisk">*</span></label>
+        <div style="display: flex;">
+            <select ng-model="argDestinationFromEnv"><option value="false">Literal Var</option><option value="true">Env Var</option></select>
+            <input type="text" id="argDestination" ng-model="argDestination" ng-class="{'is-invalid-input': GOINPUTNAME[argDestination].$error.server}" />
+        </div>
+        <span class="form_error" ng-show="GOINPUTNAME[argDestination].$error.server">{{ GOINPUTNAME[argDestination].$error.server }}</span>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'sources'">
+        <label for="argOperation" ng-class="{'is-invalid-label': GOINPUTNAME[argOperation].$error.server}">Operation: <span class="asterisk">*</span></label>
+        <div style="display: flex;">
+            <select ng-model="argOperationFromEnv"><option value="false">Literal Var</option><option value="true">Env Var</option></select>
+            <input type="text" id="argOperation" ng-model="argOperation" ng-class="{'is-invalid-input': GOINPUTNAME[argOperation].$error.server}"  />
+        </div>
+        <span class="form_error" ng-show="GOINPUTNAME[argOperation].$error.server">{{ GOINPUTNAME[argOperation].$error.server }}</span>
+    </div>
+
+    <div class="form_item_block" ng-show="['install', 'pack', 'update'].includes(command)">
+        <label for="optVersion" ng-class="{'is-invalid-label': GOINPUTNAME[optVersion].$error.server}">-Version</label>
+        <div style="display: flex;">
+            <select ng-model="optVersionFromEnv"><option value="false">Literal Var</option><option value="true">Env Var</option></select>
+            <input type="text" id="optVersion" ng-model="optVersion" ng-class="{'is-invalid-input': GOINPUTNAME[optVersion].$error.server}" />
+        </div>
+        <span class="form_error" ng-show="GOINPUTNAME[optVersion].$error.server">{{ GOINPUTNAME[optVersion].$error.server }}</span>
+    </div>
+
+    <div class="form_item_block" ng-show="['install', 'push', 'restore', 'setapikey', 'add', 'delete', 'sources', 'update'].includes(command)">
+        <label for="optSource" ng-class="{'is-invalid-label': GOINPUTNAME[optSource].$error.server}">-Source</label>
+        <div style="display: flex;">
+            <select ng-model="optSourceFromEnv"><option value="false">Literal Var</option><option value="true">Env Var</option></select>
+            <input type="text" id="optSource" ng-model="optSource" ng-class="{'is-invalid-input': GOINPUTNAME[optSource].$error.server}" />
+        </div>
+        <span class="form_error" ng-show="GOINPUTNAME[optSource].$error.server">{{ GOINPUTNAME[optSource].$error.server }}</span>
+    </div>
+
+    <div class="form_item_block" ng-show="['install', 'pack', 'restore'].includes(command)">
+        <label for="optOutputDirectory" ng-class="{'is-invalid-label': GOINPUTNAME[optOutputDirectory].$error.server}">-OutputDirectory</label>
+        <div style="display: flex;">
+            <select ng-model="optOutputDirectoryFromEnv"><option value="false">Literal Var</option><option value="true">Env Var</option></select>
+            <input type="text" id="optOutputDirectory" ng-model="optOutputDirectory" ng-class="{'is-invalid-input': GOINPUTNAME[optOutputDirectory].$error.server}" />
+        </div>
+        <span class="form_error" ng-show="GOINPUTNAME[optOutputDirectory].$error.server">{{ GOINPUTNAME[optOutputDirectory].$error.server }}</span>
+    </div>
+
+    <div class="form_item_block" ng-show="['install', 'pack', 'restore'].includes(command)">
+        <label for="optSolutionDirectory" ng-class="{'is-invalid-label': GOINPUTNAME[optSolutionDirectory].$error.server}">-SolutionDirectory</label>
+        <div style="display: flex;">
+            <select ng-model="optSolutionDirectoryFromEnv"><option value="false">Literal Var</option><option value="true">Env Var</option></select>
+            <input type="text" id="optSolutionDirectory" ng-model="optSolutionDirectory" ng-class="{'is-invalid-input': GOINPUTNAME[optSolutionDirectory].$error.server}" />
+        </div>
+        <span class="form_error" ng-show="GOINPUTNAME[optSolutionDirectory].$error.server">{{ GOINPUTNAME[optSolutionDirectory].$error.server }}</span>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'install'">
+        <div class="checkbox_row">
+            <input type="checkbox" id="optExcludeVersion" ng-model="optExcludeVersion" ng-init="OptExcludeVersion = OptExcludeVersion || false" ng-true-value="true" ng-false-value="false" />
+            <label for="optExcludeVersion">-ExcludeVersion</label>
+        </div>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'install'">
+        <label for="optFramework" ng-class="{'is-invalid-label': GOINPUTNAME[optFramework].$error.server}">-Framework</label>
+        <div style="display: flex;">
+            <select ng-model="optFrameworkFromEnv"><option value="false">Literal Var</option><option value="true">Env Var</option></select>
+            <input type="text" id="optFramework" ng-model="optFramework" ng-class="{'is-invalid-input': GOINPUTNAME[optFramework].$error.server}" />
+        </div>
+        <span class="form_error" ng-show="GOINPUTNAME[optFramework].$error.server">{{ GOINPUTNAME[optFramework].$error.server }}</span>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'pack'">
+        <div class="checkbox_row">
+            <input type="checkbox" id="optOutputFileNamesWithoutVersion" ng-model="optOutputFileNamesWithoutVersion" ng-init="OptOutputFileNamesWithoutVersion = OptOutputFileNamesWithoutVersion || false" ng-true-value="true" ng-false-value="false" />
+            <label for="optOutputFileNamesWithoutVersion">-OutputFileNamesWithoutVersion</label>
+        </div>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'pack'">
+        <label for="optBasePath" ng-class="{'is-invalid-label': GOINPUTNAME[optBasePath].$error.server}">-BasePath</label>
+        <div style="display: flex;">
+            <select ng-model="optBasePathFromEnv"><option value="false">Literal Var</option><option value="true">Env Var</option></select>
+            <input type="text" id="optBasePath" ng-model="optBasePath" ng-class="{'is-invalid-input': GOINPUTNAME[optBasePath].$error.server}" />
+        </div>
+        <span class="form_error" ng-show="GOINPUTNAME[optBasePath].$error.server">{{ GOINPUTNAME[optBasePath].$error.server }}</span>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'pack'">
+        <div class="checkbox_row">
+            <input type="checkbox" id="optBuild" ng-model="optBuild" ng-init="OptBuild = OptBuild || false" ng-true-value="true" ng-false-value="false" />
+            <label for="optBuild">-Build</label>
+        </div>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'pack'">
+        <label for="optExclude" ng-class="{'is-invalid-label': GOINPUTNAME[optExclude].$error.server}">-Exclude</label>
+        <div style="display: flex;">
+            <select ng-model="optExcludeFromEnv"><option value="false">Literal Var</option><option value="true">Env Var</option></select>
+            <input type="text" id="optExclude" ng-model="optExclude" ng-class="{'is-invalid-input': GOINPUTNAME[optExclude].$error.server}" />
+        </div>
+        <span class="form_error" ng-show="GOINPUTNAME[optExclude].$error.server">{{ GOINPUTNAME[optExclude].$error.server }}</span>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'pack'">
+        <div class="checkbox_row">
+            <input type="checkbox" id="optExcludeEmptyDirectories" ng-model="optExcludeEmptyDirectories" ng-init="OptExcludeEmptyDirectories = OptExcludeEmptyDirectories || false" ng-true-value="true" ng-false-value="false" />
+            <label for="optExcludeEmptyDirectories">-ExcludeEmptyDirectories</label>
+        </div>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'pack'">
+        <div class="checkbox_row">
+            <input type="checkbox" id="optIncludeReferencedProjects" ng-model="optIncludeReferencedProjects" ng-init="OptIncludeReferencedProjects = OptIncludeReferencedProjects || false" ng-true-value="true" ng-false-value="false" />
+            <label for="optIncludeReferencedProjects">-IncludeReferencedProjects</label>
+        </div>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'pack'">
+        <div class="checkbox_row">
+            <input type="checkbox" id="optInstallPackageToOutputPath" ng-model="optInstallPackageToOutputPath" ng-init="OptInstallPackageToOutputPath = OptInstallPackageToOutputPath || false" ng-true-value="true" ng-false-value="false" />
+            <label for="optInstallPackageToOutputPath">-InstallPackageToOutputPath</label>
+        </div>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'pack'">
+        <label for="optMinClientVersion" ng-class="{'is-invalid-label': GOINPUTNAME[optMinClientVersion].$error.server}">-MinClientVersion</label>
+        <div style="display: flex;">
+            <select ng-model="optMinClientVersionFromEnv"><option value="false">Literal Var</option><option value="true">Env Var</option></select>
+            <input type="text" id="optMinClientVersion" ng-model="optMinClientVersion" ng-class="{'is-invalid-input': GOINPUTNAME[optMinClientVersion].$error.server}" />
+        </div>
+        <span class="form_error" ng-show="GOINPUTNAME[optMinClientVersion].$error.server">{{ GOINPUTNAME[optMinClientVersion].$error.server }}</span>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'pack'">
+        <label for="optProperties" ng-class="{'is-invalid-label': GOINPUTNAME[optProperties].$error.server}">-Properties</label>
+        <div style="display: flex;">
+            <select ng-model="optPropertiesFromEnv"><option value="false">Literal Var</option><option value="true">Env Var</option></select>
+            <input type="text" id="optProperties" ng-model="optProperties" ng-class="{'is-invalid-input': GOINPUTNAME[optProperties].$error.server}" />
+        </div>
+        <span class="form_error" ng-show="GOINPUTNAME[optProperties].$error.server">{{ GOINPUTNAME[optProperties].$error.server }}</span>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'pack'">
+        <div class="checkbox_row">
+            <input type="checkbox" id="optNoDefaultExcludes" ng-model="optNoDefaultExcludes" ng-init="OptNoDefaultExcludes = OptNoDefaultExcludes || false" ng-true-value="true" ng-false-value="false" />
+            <label for="optNoDefaultExcludes">-NoDefaultExcludes</label>
+        </div>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'pack'">
+        <div class="checkbox_row">
+            <input type="checkbox" id="optNoPackageAnalysis" ng-model="optNoPackageAnalysis" ng-init="OptNoPackageAnalysis = OptNoPackageAnalysis || false" ng-true-value="true" ng-false-value="false" />
+            <label for="optNoPackageAnalysis">-NoPackageAnalysis</label>
+        </div>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'pack'">
+        <label for="optSuffix" ng-class="{'is-invalid-label': GOINPUTNAME[optSuffix].$error.server}">-Suffix</label>
+        <div style="display: flex;">
+            <select ng-model="optSuffixFromEnv"><option value="false">Literal Var</option><option value="true">Env Var</option></select>
+            <input type="text" id="optSuffix" ng-model="optSuffix" ng-class="{'is-invalid-input': GOINPUTNAME[optSuffix].$error.server}" />
+        </div>
+        <span class="form_error" ng-show="GOINPUTNAME[optSuffix].$error.server">{{ GOINPUTNAME[optSuffix].$error.server }}</span>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'pack'">
+        <label>-SymbolPackageFormat</label>
+        <div class="checkbox_row">
+            <input id="optSymbolPackageFormatSnupkg" type="radio" ng-model="optSymbolPackageFormat" value="snupkg">
+            <label for="optSymbolPackageFormatSnupkg">snupkg</label>
+            <input id="optSymbolPackageFormatSymbolsNupkg" type="radio" ng-model="optSymbolPackageFormat" value="symbols.nupkg">
+            <label for="optSymbolPackageFormatSymbolsNupkg">symbols.nupkg</label>
+        </div>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'pack'">
+        <div class="checkbox_row">
+            <input type="checkbox" id="optSymbols" ng-model="optSymbols" ng-init="OptSymbols = OptSymbols || false" ng-true-value="true" ng-false-value="false" />
+            <label for="optSymbols">-Symbols</label>
+        </div>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'pack'">
+        <div class="checkbox_row">
+            <input type="checkbox" id="optTool" ng-model="optTool" ng-init="OptTool = OptTool || false" ng-true-value="true" ng-false-value="false" />
+            <label for="optTool">-Tool</label>
+        </div>
+    </div>
+
+    <div class="form_item_block" ng-show="['install', 'restore'].includes(command)">
+        <div class="checkbox_row">
+            <input type="checkbox" id="optDirectDownload" ng-model="optDirectDownload" ng-init="OptDirectDownload = OptDirectDownload || false" ng-true-value="true" ng-false-value="false" />
+            <label for="optDirectDownload">-DirectDownload</label>
+        </div>
+    </div>
+
+    <div class="form_item_block" ng-show="['install', 'restore'].includes(command)">
+        <div class="checkbox_row">
+            <input type="checkbox" id="optDisableParallelProcessing" ng-model="optDisableParallelProcessing" ng-init="OptDisableParallelProcessing = OptDisableParallelProcessing || false" ng-true-value="true" ng-false-value="false" />
+            <label for="optDisableParallelProcessing">-DisableParallelProcessing</label>
+        </div>
+    </div>
+
+    <div class="form_item_block" ng-show="['install', 'restore'].includes(command)">
+        <div class="checkbox_row">
+            <input type="checkbox" id="optNoHttpCache" ng-model="optNoHttpCache" ng-init="OptNoHttpCache = OptNoHttpCache || false" ng-true-value="true" ng-false-value="false" />
+            <label for="optNoHttpCache">-NoHttpCache</label>
+        </div>
+    </div>
+
+    <div class="form_item_block" ng-show="['install', 'restore'].includes(command)">
+        <label for="optFallbackSource" ng-class="{'is-invalid-label': GOINPUTNAME[optFallbackSource].$error.server}">-FallbackSource</label>
+        <div style="display: flex;">
+            <select ng-model="optFallbackSourceFromEnv"><option value="false">Literal Var</option><option value="true">Env Var</option></select>
+            <input type="text" id="optFallbackSource" ng-model="optFallbackSource" ng-class="{'is-invalid-input': GOINPUTNAME[optFallbackSource].$error.server}" />
+        </div>
+        <span class="form_error" ng-show="GOINPUTNAME[optFallbackSource].$error.server">{{ GOINPUTNAME[optFallbackSource].$error.server }}</span>
+    </div>
+
+    <div class="form_item_block" ng-show="['install', 'restore'].includes(command)">
+        <label>-PackageSaveMode</label>
+        <div class="checkbox_row">
+            <input id="optPackageSaveModeNuspec" type="radio" ng-model="optPackageSaveMode" value="nuspec">
+            <label for="optPackageSaveModeNuspec">nuspec</label>
+            <input id="optPackageSaveModeNupkg" type="radio" ng-model="optPackageSaveMode" value="nupkg">
+            <label for="optPackageSaveModeNupkg">nupkg</label>
+            <input id="optPackageSaveModeNuspecNupkg" type="radio" ng-model="optPackageSaveMode" value="nuspec;nupkg">
+            <label for="optPackageSaveModeNuspecNupkg">nuspec;nupkg</label>
+        </div>
+    </div>
+
+    <div class="form_item_block" ng-show="['install', 'restore'].includes(command)">
+        <div class="checkbox_row">
+            <input type="checkbox" id="optRequireConsent" ng-model="optRequireConsent" ng-init="OptRequireConsent = OptRequireConsent || false" ng-true-value="true" ng-false-value="false" />
+            <label for="optRequireConsent">-RequireConsent</label>
+        </div>
+    </div>
+
+    <div class="form_item_block" ng-show="['install', 'update'].includes(command)">
+        <label for="optDependencyVersion">-DependencyVersion</label>
+        <select id="optDependencyVersion" ng-model="optDependencyVersion">
+            <option value="Lowest">Lowest</option>
+            <option value="HighestPatch">HighestPatch</option>
+            <option value="HighestMinor">HighestMinor</option>
+            <option value="Highest">Highest</option>
+            <option value="Ignore">Ignore</option>
+        </select>
+    </div>
+
+    <div class="form_item_block" ng-show="['install', 'update'].includes(command)">
+        <div class="checkbox_row">
+            <input type="checkbox" id="optPreRelease" ng-model="optPreRelease" ng-init="OptPreRelease = OptPreRelease || false" ng-true-value="true" ng-false-value="false" />
+            <label for="optPreRelease">-PreRelease</label>
+        </div>
+    </div>
+
+    <div class="form_item_block" ng-show="['pack', 'restore', 'update'].includes(command)">
+        <label for="optMSBuildPath" ng-class="{'is-invalid-label': GOINPUTNAME[optMSBuildPath].$error.server}">-MSBuildPath</label>
+        <div style="display: flex;">
+            <select ng-model="optMSBuildPathFromEnv"><option value="false">Literal Var</option><option value="true">Env Var</option></select>
+            <input type="text" id="optMSBuildPath" ng-model="optMSBuildPath" ng-class="{'is-invalid-input': GOINPUTNAME[optMSBuildPath].$error.server}" />
+        </div>
+        <span class="form_error" ng-show="GOINPUTNAME[optMSBuildPath].$error.server">{{ GOINPUTNAME[optMSBuildPath].$error.server }}</span>
+    </div>
+
+    <div class="form_item_block" ng-show="['pack', 'restore', 'update'].includes(command)">
+        <label for="optMSBuildVersion" ng-class="{'is-invalid-label': GOINPUTNAME[optMSBuildVersion].$error.server}">-MSBuildVersion</label>
+        <div style="display: flex;">
+            <select ng-model="optMSBuildVersionFromEnv"><option value="false">Literal Var</option><option value="true">Env Var</option></select>
+            <input type="text" id="optMSBuildVersion" ng-model="optMSBuildVersion" ng-class="{'is-invalid-input': GOINPUTNAME[optMSBuildVersion].$error.server}" />
+        </div>
+        <span class="form_error" ng-show="GOINPUTNAME[optMSBuildVersion].$error.server">{{ GOINPUTNAME[optMSBuildVersion].$error.server }}</span>
+    </div>
+
+    <div class="form_item_block" ng-show="['pack', 'restore'].includes(command)">
+        <label for="optPackagesDirectory" ng-class="{'is-invalid-label': GOINPUTNAME[optPackagesDirectory].$error.server}">-PackagesDirectory</label>
+        <div style="display: flex;">
+            <select ng-model="optPackagesDirectoryFromEnv"><option value="false">Literal Var</option><option value="true">Env Var</option></select>
+            <input type="text" id="optPackagesDirectory" ng-model="optPackagesDirectory" ng-class="{'is-invalid-input': GOINPUTNAME[optPackagesDirectory].$error.server}" />
+        </div>
+        <span class="form_error" ng-show="GOINPUTNAME[optPackagesDirectory].$error.server">{{ GOINPUTNAME[optPackagesDirectory].$error.server }}</span>
+    </div>
+
+    <div class="form_item_block" ng-show="['push', 'delete'].includes(command)">
+        <label for="optApiKey" ng-class="{'is-invalid-label': GOINPUTNAME[optApiKey].$error.server}">-ApiKey</label>
+        <div style="display: flex;">
+            <select ng-model="optApiKeyFromEnv"><option value="false">Literal Var</option><option value="true">Env Var</option></select>
+            <input type="password" id="optApiKey" ng-model="optApiKey" ng-show="optApiKeyFromEnv == 'false'" ng-class="{'is-invalid-input': GOINPUTNAME[optApiKey].$error.server}" />
+            <input type="text" id="optApiKey" ng-model="optApiKey" ng-show="optApiKeyFromEnv == 'true'" ng-class="{'is-invalid-input': GOINPUTNAME[optApiKey].$error.server}" />
+        </div>
+        <span class="form_error" ng-show="GOINPUTNAME[optApiKey].$error.server">{{ GOINPUTNAME[optApiKey].$error.server }}</span>
+    </div>
+
+    <div class="form_item_block" ng-show="['push', 'delete'].includes(command)">
+        <div class="checkbox_row">
+            <input type="checkbox" id="optNoServiceEndpoint" ng-model="optNoServiceEndpoint" ng-init="OptNoServiceEndpoint = OptNoServiceEndpoint || false" ng-true-value="true" ng-false-value="false" />
+            <label for="optNoServiceEndpoint">-NoServiceEndpoint</label>
+        </div>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'push'">
+        <div class="checkbox_row">
+            <input type="checkbox" id="optDisableBuffering" ng-model="optDisableBuffering" ng-init="OptDisableBuffering = OptDisableBuffering || false" ng-true-value="true" ng-false-value="false" />
+            <label for="optDisableBuffering">-DisableBuffering</label>
+        </div>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'push'">
+        <div class="checkbox_row">
+            <input type="checkbox" id="optNoSymbols" ng-model="optNoSymbols" ng-init="OptNoSymbols = OptNoSymbols || false" ng-true-value="true" ng-false-value="false" />
+            <label for="optNoSymbols">-NoSymbols</label>
+        </div>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'push'">
+        <div class="checkbox_row">
+            <input type="checkbox" id="optSkipDuplicate" ng-model="optSkipDuplicate" ng-init="OptSkipDuplicate = OptSkipDuplicate || false" ng-true-value="true" ng-false-value="false" />
+            <label for="optSkipDuplicate">-SkipDuplicate</label>
+        </div>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'push'">
+        <label for="optSymbolSource" ng-class="{'is-invalid-label': GOINPUTNAME[optSymbolSource].$error.server}">-SymbolSource</label>
+        <div style="display: flex;">
+            <select ng-model="optSymbolSourceFromEnv"><option value="false">Literal Var</option><option value="true">Env Var</option></select>
+            <input type="text" id="optSymbolSource" ng-model="optSymbolSource" ng-class="{'is-invalid-input': GOINPUTNAME[optSymbolSource].$error.server}" />
+        </div>
+        <span class="form_error" ng-show="GOINPUTNAME[optSymbolSource].$error.server">{{ GOINPUTNAME[optSymbolSource].$error.server }}</span>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'push'">
+        <label for="optSymbolApiKey" ng-class="{'is-invalid-label': GOINPUTNAME[optSymbolApiKey].$error.server}">-SymbolApiKey</label>
+        <div style="display: flex;">
+            <select ng-model="optSymbolApiKeyFromEnv"><option value="false">Literal Var</option><option value="true">Env Var</option></select>
+            <input type="password" id="optSymbolApiKey" ng-model="optSymbolApiKey" ng-show="optSymbolApiKeyFromEnv == 'false'" ng-class="{'is-invalid-input': GOINPUTNAME[optSymbolApiKey].$error.server}" />
+            <input type="text" id="optSymbolApiKey" ng-model="optSymbolApiKey" ng-show="optSymbolApiKeyFromEnv == 'true'" ng-class="{'is-invalid-input': GOINPUTNAME[optSymbolApiKey].$error.server}" />
+        </div>
+        <span class="form_error" ng-show="GOINPUTNAME[optSymbolApiKey].$error.server">{{ GOINPUTNAME[optSymbolApiKey].$error.server }}</span>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'push'">
+        <label for="optTimeout" ng-class="{'is-invalid-label': GOINPUTNAME[optTimeout].$error.server}">-Timeout</label>
+        <div style="display: flex;">
+            <select ng-model="optTimeoutFromEnv"><option value="false">Literal Var</option><option value="true">Env Var</option></select>
+            <input type="text" id="optTimeout" ng-model="optTimeout" ng-class="{'is-invalid-input': GOINPUTNAME[optTimeout].$error.server}" />
+        </div>
+        <span class="form_error" ng-show="GOINPUTNAME[optTimeout].$error.server">{{ GOINPUTNAME[optTimeout].$error.server }}</span>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'config'">
+        <label for="optSet" ng-class="{'is-invalid-label': GOINPUTNAME[optSet].$error.server}">-Set</label>
+        <div style="display: flex;">
+            <select ng-model="optSetFromEnv"><option value="false">Literal Var</option><option value="true">Env Var</option></select>
+            <input type="text" id="optSet" ng-model="optSet" ng-class="{'is-invalid-input': GOINPUTNAME[optSet].$error.server}" />
+        </div>
+        <span class="form_error" ng-show="GOINPUTNAME[optSet].$error.server">{{ GOINPUTNAME[optSet].$error.server }}</span>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'config'">
+        <label for="optAsPath" ng-class="{'is-invalid-label': GOINPUTNAME[optAsPath].$error.server}">-AsPath</label>
+        <div style="display: flex;">
+            <select ng-model="optAsPathFromEnv"><option value="false">Literal Var</option><option value="true">Env Var</option></select>
+            <input type="text" id="optAsPath" ng-model="optAsPath" ng-class="{'is-invalid-input': GOINPUTNAME[optAsPath].$error.server}" />
+        </div>
+        <span class="form_error" ng-show="GOINPUTNAME[optAsPath].$error.server">{{ GOINPUTNAME[optAsPath].$error.server }}</span>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'restore'">
+        <div class="checkbox_row">
+            <input type="checkbox" id="optForce" ng-model="optForce" ng-init="OptForce = OptForce || false" ng-true-value="true" ng-false-value="false" />
+            <label for="optForce">-Force</label>
+        </div>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'restore'">
+        <div class="checkbox_row">
+            <input type="checkbox" id="optForceEvaluate" ng-model="optForceEvaluate" ng-init="OptForceEvaluate = OptForceEvaluate || false" ng-true-value="true" ng-false-value="false" />
+            <label for="optForceEvaluate">-ForceEvaluate</label>
+        </div>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'restore'">
+        <label for="optLockFilePath" ng-class="{'is-invalid-label': GOINPUTNAME[optLockFilePath].$error.server}">-LockFilePath</label>
+        <div style="display: flex;">
+            <select ng-model="optLockFilePathFromEnv"><option value="false">Literal Var</option><option value="true">Env Var</option></select>
+            <input type="text" id="optLockFilePath" ng-model="optLockFilePath" ng-class="{'is-invalid-input': GOINPUTNAME[optLockFilePath].$error.server}" />
+        </div>
+        <span class="form_error" ng-show="GOINPUTNAME[optLockFilePath].$error.server">{{ GOINPUTNAME[optLockFilePath].$error.server }}</span>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'restore'">
+        <div class="checkbox_row">
+            <input type="checkbox" id="optLockedMode" ng-model="optLockedMode" ng-init="OptLockedMode = OptLockedMode || false" ng-true-value="true" ng-false-value="false" />
+            <label for="optLockedMode">-LockedMode</label>
+        </div>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'restore'">
+        <label for="optProject2ProjectTimeOut" ng-class="{'is-invalid-label': GOINPUTNAME[optProject2ProjectTimeOut].$error.server}">-Project2ProjectTimeOut</label>
+        <div style="display: flex;">
+            <select ng-model="optProject2ProjectTimeOutFromEnv"><option value="false">Literal Var</option><option value="true">Env Var</option></select>
+            <input type="text" id="optProject2ProjectTimeOut" ng-model="optProject2ProjectTimeOut" ng-class="{'is-invalid-input': GOINPUTNAME[optProject2ProjectTimeOut].$error.server}" />
+        </div>
+        <span class="form_error" ng-show="GOINPUTNAME[optProject2ProjectTimeOut].$error.server">{{ GOINPUTNAME[optProject2ProjectTimeOut].$error.server }}</span>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'restore'">
+        <div class="checkbox_row">
+            <input type="checkbox" id="optRecursive" ng-model="optRecursive" ng-init="OptRecursive = OptRecursive || false" ng-true-value="true" ng-false-value="false" />
+            <label for="optRecursive">-Recursive</label>
+        </div>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'restore'">
+        <div class="checkbox_row">
+            <input type="checkbox" id="optUseLockFile" ng-model="optUseLockFile" ng-init="OptUseLockFile = OptUseLockFile || false" ng-true-value="true" ng-false-value="false" />
+            <label for="optUseLockFile">-UseLockFile</label>
+        </div>
+    </div>
+
+    <div class="form_item_block" ng-show="['add', 'init'].includes(command)">
+        <div class="checkbox_row">
+            <input type="checkbox" id="optExpand" ng-model="optExpand" ng-init="OptExpand = OptExpand || false" ng-true-value="true" ng-false-value="false" />
+            <label for="optExpand">-Expand</label>
+        </div>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'delete'">
+        <div class="checkbox_row">
+            <input type="checkbox" id="optNoPrompt" ng-model="optNoPrompt" ng-init="OptNoPrompt = OptNoPrompt || false" ng-true-value="true" ng-false-value="false" />
+            <label for="optNoPrompt">-NoPrompt</label>
+        </div>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'sources'">
+        <div class="checkbox_row">
+            <input type="checkbox" id="optAllowInsecureConnections" ng-model="optAllowInsecureConnections" ng-init="OptAllowInsecureConnections = OptAllowInsecureConnections || false" ng-true-value="true" ng-false-value="false" />
+            <label for="optAllowInsecureConnections">-AllowInsecureConnections</label>
+        </div>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'sources'">
+        <label>-Format</label>
+        <div class="checkbox_row">
+            <input id="optFormatDetailed" type="radio" ng-model="optFormat" value="Detailed">
+            <label for="optFormatDetailed">Detailed</label>
+            <input id="optFormatShort" type="radio" ng-model="optFormat" value="Short">
+            <label for="optFormatShort">Short</label>
+        </div>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'sources'">
+        <label for="optName" ng-class="{'is-invalid-label': GOINPUTNAME[optName].$error.server}">-Name</label>
+        <div style="display: flex;">
+            <select ng-model="optNameFromEnv"><option value="false">Literal Var</option><option value="true">Env Var</option></select>
+            <input type="text" id="optName" ng-model="optName" ng-class="{'is-invalid-input': GOINPUTNAME[optName].$error.server}" />
+        </div>
+        <span class="form_error" ng-show="GOINPUTNAME[optName].$error.server">{{ GOINPUTNAME[optName].$error.server }}</span>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'sources'">
+        <label for="optProtocolVersion" ng-class="{'is-invalid-label': GOINPUTNAME[optProtocolVersion].$error.server}">-ProtocolVersion</label>
+        <div style="display: flex;">
+            <select ng-model="optProtocolVersionFromEnv"><option value="false">Literal Var</option><option value="true">Env Var</option></select>
+            <input type="text" id="optProtocolVersion" ng-model="optProtocolVersion" ng-class="{'is-invalid-input': GOINPUTNAME[optProtocolVersion].$error.server}" />
+        </div>
+        <span class="form_error" ng-show="GOINPUTNAME[optProtocolVersion].$error.server">{{ GOINPUTNAME[optProtocolVersion].$error.server }}</span>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'sources'">
+        <label for="optUsername" ng-class="{'is-invalid-label': GOINPUTNAME[optUsername].$error.server}">-Username</label>
+        <div style="display: flex;">
+            <select ng-model="optUsernameFromEnv"><option value="false">Literal Var</option><option value="true">Env Var</option></select>
+            <input type="text" id="optUsername" ng-model="optUsername" ng-class="{'is-invalid-input': GOINPUTNAME[optUsername].$error.server}" />
+        </div>
+        <span class="form_error" ng-show="GOINPUTNAME[optUsername].$error.server">{{ GOINPUTNAME[optUsername].$error.server }}</span>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'sources'">
+        <label for="optPassword" ng-class="{'is-invalid-label': GOINPUTNAME[optPassword].$error.server}">-Password</label>
+        <div style="display: flex;">
+            <select ng-model="optPasswordFromEnv"><option value="false">Literal Var</option><option value="true">Env Var</option></select>
+            <input type="password" id="optPassword" ng-model="optPassword" ng-show="optPasswordFromEnv == 'false'" ng-class="{'is-invalid-input': GOINPUTNAME[optPassword].$error.server}" />
+            <input type="text" id="optPassword" ng-model="optPassword" ng-show="optPasswordFromEnv == 'true'" ng-class="{'is-invalid-input': GOINPUTNAME[optPassword].$error.server}" />
+        </div>
+        <span class="form_error" ng-show="GOINPUTNAME[optPassword].$error.server">{{ GOINPUTNAME[optPassword].$error.server }}</span>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'sources'">
+        <div class="checkbox_row">
+            <input type="checkbox" id="optStorePasswordInClearText" ng-model="optStorePasswordInClearText" ng-init="OptStorePasswordInClearText = OptStorePasswordInClearText || false" ng-true-value="true" ng-false-value="false" />
+            <label for="optStorePasswordInClearText">-StorePasswordInClearText</label>
+        </div>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'sources'">
+        <label for="optValidAuthenticationTypes" ng-class="{'is-invalid-label': GOINPUTNAME[optValidAuthenticationTypes].$error.server}">-ValidAuthenticationTypes</label>
+        <div style="display: flex;">
+            <select ng-model="optValidAuthenticationTypesFromEnv"><option value="false">Literal Var</option><option value="true">Env Var</option></select>
+            <input type="text" id="optValidAuthenticationTypes" ng-model="optValidAuthenticationTypes" ng-class="{'is-invalid-input': GOINPUTNAME[optValidAuthenticationTypes].$error.server}" />
+        </div>
+        <span class="form_error" ng-show="GOINPUTNAME[optValidAuthenticationTypes].$error.server">{{ GOINPUTNAME[optValidAuthenticationTypes].$error.server }}</span>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'update'">
+        <label for="optId" ng-class="{'is-invalid-label': GOINPUTNAME[optId].$error.server}">-Id</label>
+        <div style="display: flex;">
+            <select ng-model="optIdFromEnv"><option value="false">Literal Var</option><option value="true">Env Var</option></select>
+            <input type="text" id="optId" ng-model="optId" ng-class="{'is-invalid-input': GOINPUTNAME[optId].$error.server}" />
+        </div>
+        <span class="form_error" ng-show="GOINPUTNAME[optId].$error.server">{{ GOINPUTNAME[optId].$error.server }}</span>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'update'">
+        <label for="optRepositoryPath" ng-class="{'is-invalid-label': GOINPUTNAME[optRepositoryPath].$error.server}">-RepositoryPath</label>
+        <div style="display: flex;">
+            <select ng-model="optRepositoryPathFromEnv"><option value="false">Literal Var</option><option value="true">Env Var</option></select>
+            <input type="text" id="optRepositoryPath" ng-model="optRepositoryPath" ng-class="{'is-invalid-input': GOINPUTNAME[optRepositoryPath].$error.server}" />
+        </div>
+        <span class="form_error" ng-show="GOINPUTNAME[optRepositoryPath].$error.server">{{ GOINPUTNAME[optRepositoryPath].$error.server }}</span>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'update'">
+        <div class="checkbox_row">
+            <input type="checkbox" id="optSafe" ng-model="optSafe" ng-init="OptSafe = OptSafe || false" ng-true-value="true" ng-false-value="false" />
+            <label for="optSafe">-Safe</label>
+        </div>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'update'">
+        <label>-FileConflictAction</label>
+        <div class="checkbox_row">
+            <input id="optFileConflictActionOverwrite" type="radio" ng-model="optFileConflictAction" value="Overwrite">
+            <label for="optFileConflictActionOverwrite">Overwrite</label>
+            <input id="optFileConflictActionIgnore" type="radio" ng-model="optFileConflictAction" value="Ignore">
+            <label for="optFileConflictActionIgnore">Ignore</label>
+        </div>
+    </div>
+
+    <div class="form_item_block" ng-show="command == 'update'">
+        <div class="checkbox_row">
+            <input type="checkbox" id="optSelf" ng-model="optSelf" ng-init="OptSelf = OptSelf || false" ng-true-value="true" ng-false-value="false" />
+            <label for="optSelf">-Self</label>
+        </div>
+    </div>
+
+    <div class="form_item_block">
+        <label>Additional Options:</label>
+        <div class="checkbox_row">
+            <label for="optConfigFile">-ConfigFile</label>
+            <div style="display: flex;">
+                <select ng-model="optConfigFileFromEnv"><option value="false">Literal Var</option><option value="true">Env Var</option></select>
+                <input type="text" id="optConfigFile" wrap="off" autocomplete="off" ng-model="optConfigFile"></input>
+            </div>
+            <span class="form_error" ng-show="GOINPUTNAME[optConfigFile].$error.server">{{ GOINPUTNAME[optConfigFile].$error.server }}</span>
+        </div>
+        <div class="checkbox_row">
+            <input type="checkbox" id="optForceEnglishOutput" ng-model="optForceEnglishOutput" ng-init="OptForceEnglishOutput = OptForceEnglishOutput || false" ng-true-value="true" ng-false-value="false" />
+            <label for="optForceEnglishOutput">-ForceEnglishOutput</label>
+        </div>
+        <div class="checkbox_row">
+            <label>-Verbosity</label>
+            <div class="checkbox_row">
+                <input id="optVerbosityNormal" type="radio" ng-model="optVerbosity" value="normal">
+                <label for="optVerbosityNormal">normal</label>
+                <input id="optVerbosityQuiet" type="radio" ng-model="optVerbosity" value="quiet">
+                <label for="optVerbosityQuiet">quiet</label>
+                <input id="optVerbosityDetailed" type="radio" ng-model="optVerbosity" value="detailed">
+                <label for="optVerbosityDetailed">detailed</label>
+            </div>
+        </div>
+    </div>
+</div>
